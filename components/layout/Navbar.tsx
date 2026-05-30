@@ -1,8 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import NotificationBell
-from "@/components/NotificationBell";
+import NotificationBell from "@/components/NotificationBell";
 
 interface NavbarProps {
   loggedIn: boolean;

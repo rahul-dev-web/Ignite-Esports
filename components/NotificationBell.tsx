@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect,
-  useState }
+import { useEffect, useState } from "react";
 
-from "react";
+import { Bell, } from "lucide-react";
 
-import {
-  Bell,
-} from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
-import { supabase }
-from "@/lib/supabase";
-
-import toast
-from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export default function NotificationBell() {
 

@@ -1,5 +1,4 @@
-import { supabase }
-from "./supabase";
+import { supabase } from "./supabase";
 
 export async function uploadTournamentBanner(
   file: File
@@ -38,6 +37,14 @@ export async function uploadTournamentBanner(
 
   return publicUrlData.publicUrl;
 }
+
+
+export async function deleteTournamentBanner(path: string) {
+  await supabase.storage
+    .from("tournament-banners")
+    .remove([path]);
+}
+
 export async function uploadAvatar(
   file: File
 ) {

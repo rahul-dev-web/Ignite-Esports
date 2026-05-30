@@ -1,10 +1,9 @@
 "use client";
 
-import { useState }
-from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
-import { supabase }
-from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 type TeamRow = {
   team_name: string;
@@ -198,7 +197,7 @@ export default function AdminLeaderboardPage() {
           return;
         }
 
-        alert(
+        toast.success(
           "Leaderboard published"
         );
 

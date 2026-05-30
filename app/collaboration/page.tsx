@@ -1,17 +1,10 @@
 "use client";
 
-import { useState }
-from "react";
+import { useState } from "react";
 
-import {
-  Mail,
-  MessageCircle,
-  Globe,
-  Disc,
-} from "lucide-react";
+import {Mail,MessageCircle,Globe,Disc,} from "lucide-react";
 
-import { supabase }
-from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export default function CollaborationPage() {
 

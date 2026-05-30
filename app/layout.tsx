@@ -3,8 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import MobileBottomNav
-from "@/components/layout/MobileBottomNav";
+import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import AppShell from "@/components/layout/AppShell";
 
 const geistSans = Geist({

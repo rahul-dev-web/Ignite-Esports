@@ -1,16 +1,12 @@
 "use client";
 
-import { useEffect, useState }
-from "react";
+import { useEffect, useState } from "react";
 import TournamentCardSkeleton from "@/components/tournaments/TournamentCardSkeleton";
-import { supabase }
-from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 
-import TournamentCard
-from "@/components/tournaments/TournamentCard";
+import TournamentCard from "@/components/tournaments/TournamentCard";
 
-import { Tournament }
-from "@/types/tournament";
+import { Tournament } from "@/types/tournament";
 
 export default function TournamentsPage() {
 

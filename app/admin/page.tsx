@@ -3,12 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 
+import toast from "react-hot-toast";
+
 import { useAdminRoute } from "@/hooks/useAdminRoute";
 import { supabase } from "@/lib/supabase";
 
-import {
-  uploadTournamentBanner,
-} from "@/lib/storage";
+import { uploadTournamentBanner, deleteTournamentBanner} from "@/lib/storage";
 
 export default function AdminPage() {
 
@@ -68,7 +68,7 @@ console.log("Supabase User:", user);
           !banner
         ) {
 
-          alert(
+          toast.error(
             "Please fill all fields"
           );
 
@@ -88,7 +88,7 @@ console.log("Supabase User:", user);
 
         if (!bannerUrl) {
 
-          alert(
+          toast.error(
             "Banner upload failed"
           );
 
@@ -127,7 +127,9 @@ console.log("Supabase User:", user);
 
           console.log(error);
 
-          alert(
+          await deleteTournamentBanner(bannerUrl);
+
+          toast.error(
             "Tournament creation failed"
           );
 
@@ -140,7 +142,7 @@ console.log("Supabase User:", user);
           SUCCESS
         */
 
-        alert(
+        toast.success(
           "Tournament created successfully"
         );
 
@@ -166,7 +168,7 @@ console.log("Supabase User:", user);
 
         console.log(error);
 
-        alert(
+        toast.error(
           "Something went wrong"
         );
 
@@ -368,7 +370,7 @@ console.log("Supabase User:", user);
                 )
               ) {
 
-                alert(
+                toast.error(
                   "Only image files are allowed"
                 );
 
@@ -384,7 +386,7 @@ console.log("Supabase User:", user);
                 5 * 1024 * 1024
               ) {
 
-                alert(
+                toast.error(
                   "Image must be under 5MB"
                 );
 

@@ -1,10 +1,9 @@
 "use client";
 
-import { useState }
-from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
-import { supabase }
-from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export default function AdminAnnouncementsPage() {
 
@@ -74,7 +73,7 @@ export default function AdminAnnouncementsPage() {
 
         setLoading(false);
 
-        alert(
+        toast.success(
           "Announcement published!"
         );
 

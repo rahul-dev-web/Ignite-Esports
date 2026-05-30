@@ -1,42 +1,130 @@
 "use client";
 
-import { useEffect, useState }
-from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { supabase }
+from "@/lib/supabase";
 
 export function useAdminRoute() {
 
-  const [loading, setLoading] =
-    useState(true);
+  const router =
+    useRouter();
+
+  const [loading,
+    setLoading]
+
+    = useState(true);
 
   useEffect(() => {
 
-    const storedUser =
-      localStorage.getItem(
-        "ignite_user"
-      );
+    const checkAdmin =
+      async () => {
 
-    if (!storedUser) {
+        try {
 
-      window.location.href =
-        "/login";
+          /*
+            LOCAL USER
+          */
 
-      return;
-    }
+          const storedUser =
 
-    const user =
-      JSON.parse(storedUser);
+            localStorage.getItem(
+              "ignite_user"
+            );
 
-    if (user.role !== "admin") {
+          if (!storedUser) {
 
-      window.location.href = "/";
+            router.push("/");
 
-      return;
-    }
+            return;
+          }
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLoading(false);
+          const localUser =
 
-  }, []);
+            JSON.parse(
+              storedUser
+            );
+
+          /*
+            DATABASE ROLE CHECK
+          */
+
+          const {
+
+            data: dbUser,
+
+            error,
+
+          }
+
+            = await supabase
+
+              .from("users")
+
+              .select(
+                "role"
+              )
+
+              .eq(
+                "discord_id",
+                localUser.discord_id
+              )
+
+              .single();
+
+          /*
+            DB ERROR
+          */
+
+          if (
+            error ||
+            !dbUser
+          ) {
+
+            console.log(
+              error
+            );
+
+            router.push("/");
+
+            return;
+          }
+
+          /*
+            ROLE VALIDATION
+          */
+
+          if (
+            dbUser.role !==
+            "admin"
+          ) {
+
+            router.push("/");
+
+            return;
+          }
+
+          /*
+            ACCESS GRANTED
+          */
+
+          setLoading(false);
+
+        } catch (error) {
+
+          console.log(
+            "ADMIN CHECK ERROR:",
+            error
+          );
+
+          router.push("/");
+        }
+      };
+
+    checkAdmin();
+
+  }, [router]);
 
   return loading;
 }
