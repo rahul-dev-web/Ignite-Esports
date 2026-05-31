@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import AdminNavbar from "@/components/admin/AdminNavbar";
+import AdminSidebar from "@/components/admin/AdminSidebar";
 
 import { useAdminRoute } from "@/hooks/useAdminRoute";
 import { supabase } from "@/lib/supabase";
