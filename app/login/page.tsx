@@ -19,14 +19,13 @@ export default function LoginPage() {
   */
 
   const handleLogin = () => {
+    
 
     const clientId =
       process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID;
 
     const redirectUri =
-      encodeURIComponent(
-        process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI!
-      );
+      encodeURIComponent("https://ignite-esports-beryl.vercel.app/auth/callback");
 
     const scope =
       "identify guilds guilds.members.read";
