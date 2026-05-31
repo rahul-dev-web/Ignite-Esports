@@ -2,19 +2,50 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import {
   Home,
   Trophy,
   BarChart3,
   User,
+  Shield,
 } from "lucide-react";
+
+type IgniteUser = {
+  role?: string;
+};
 
 export default function MobileBottomNav() {
 
   const pathname = usePathname();
 
-  if (pathname.startsWith("/admin")) {
+  const [user, setUser] =
+    useState<IgniteUser | null>(null);
+
+  useEffect(() => {
+
+    const storedUser =
+      localStorage.getItem(
+        "ignite_user"
+      );
+
+    if (storedUser) {
+
+      setUser(
+        JSON.parse(storedUser)
+      );
+    }
+
+  }, []);
+
+  /*
+    HIDE INSIDE ADMIN PANEL
+  */
+
+  if (
+    pathname.startsWith("/admin")
+  ) {
     return null;
   }
 
@@ -45,6 +76,23 @@ export default function MobileBottomNav() {
     },
   ];
 
+  /*
+    SHOW ADMIN BUTTON
+    ONLY FOR ADMIN USERS
+  */
+
+  if (user?.role === "admin") {
+
+    links.push({
+
+      name: "Admin",
+
+      href: "/admin",
+
+      icon: Shield,
+    });
+  }
+
   return (
 
     <nav
@@ -73,7 +121,8 @@ export default function MobileBottomNav() {
 
       {links.map((link) => {
 
-        const Icon = link.icon;
+        const Icon =
+          link.icon;
 
         const active =
           pathname === link.href;
@@ -116,6 +165,7 @@ export default function MobileBottomNav() {
           </Link>
         );
       })}
+
     </nav>
   );
 }

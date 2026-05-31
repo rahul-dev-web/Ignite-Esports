@@ -52,12 +52,13 @@ export default function AppShell({
 
         {/* NAVBAR (ONLY ONE SOURCE OF TRUTH) */}
         <Navbar
-          loggedIn={!!user}
-          username={user?.username}
-          avatar={user?.avatar}
-          onMenuClick={() => setSidebarOpen(true)}
-          onLogout={handleLogout}
-        />
+  loggedIn={!!user}
+  username={user?.username}
+  avatar={user?.avatar}
+  role={user?.role}
+  onMenuClick={() => setSidebarOpen(true)}
+  onLogout={handleLogout}
+/>
 
         {/* PAGE CONTENT */}
         <main className="flex-1">

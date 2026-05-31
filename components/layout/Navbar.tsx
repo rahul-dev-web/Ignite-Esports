@@ -7,6 +7,7 @@ interface NavbarProps {
   loggedIn: boolean;
   username?: string;
   avatar?: string;
+  role?: string;
   onMenuClick: () => void;
   onLogout?: () => void;
 }
@@ -15,9 +16,10 @@ export default function Navbar({
   loggedIn,
   username,
   avatar,
+  role,
   onMenuClick,
   onLogout,
-}: NavbarProps) {
+}: NavbarProps){
 
   return (
 
@@ -50,9 +52,39 @@ export default function Navbar({
 
       ) : (
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
 
           <NotificationBell />
+
+          {role === "admin" && (
+
+  <a
+    href="/admin"
+    className="
+      hidden
+      md:flex
+      items-center
+
+      px-4
+      py-2
+
+      rounded-xl
+
+      bg-purple-600/20
+      border
+      border-purple-500/30
+
+      text-purple-300
+      font-semibold
+
+      hover:bg-purple-600/30
+      transition
+    "
+  >
+    Admin Panel
+  </a>
+
+)}
 
           <img
             src={avatar}
