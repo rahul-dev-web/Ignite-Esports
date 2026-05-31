@@ -25,7 +25,7 @@ export default function LoginPage() {
 
     const redirectUri =
       encodeURIComponent(
-        "http://localhost:3000/auth/callback"
+        process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI!
       );
 
     const scope =

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 
@@ -15,6 +16,8 @@ export default function AppShell({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState<IgniteUser | null>(null);
 
@@ -30,6 +33,10 @@ export default function AppShell({
     localStorage.removeItem("ignite_user");
     window.location.href = "/";
   };
+
+  if (isAdmin) {
+    return <div className="min-h-screen bg-[#05010d] text-white">{children}</div>;
+  }
 
   return (
     <div className="flex min-h-screen bg-[#05010d] text-white">
