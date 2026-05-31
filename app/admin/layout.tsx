@@ -8,15 +8,25 @@ export default function AdminLayout({
 }) {
   return (
     <div className="min-h-screen bg-[#08040d] text-white">
-      <div className="lg:flex lg:min-h-screen">
+
+      <div className="flex flex-col lg:flex-row min-h-screen">
+
+        {/* Sidebar */}
         <AdminSidebar />
 
-        <div className="flex-1 lg:pl-70">
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+
           <AdminNavbar />
 
-          <div className="px-4 py-6 sm:px-6 lg:px-8">{children}</div>
+          <main className="px-4 py-6 sm:px-6 lg:px-8">
+            {children}
+          </main>
+
         </div>
+
       </div>
+
     </div>
   );
 }
