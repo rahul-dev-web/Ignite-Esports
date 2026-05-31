@@ -83,6 +83,9 @@ export default function CallbackPage() {
             JSON.stringify(data.user)
           );
 
+          document.cookie =
+  "ignite_session=true; path=/; max-age=2592000";
+
           /*
             SUCCESS SCREEN
           */
