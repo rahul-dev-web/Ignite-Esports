@@ -6,7 +6,6 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 
 import { useAdminRoute } from "@/hooks/useAdminRoute";
-import { supabase } from "@/lib/supabase";
 
 import { uploadTournamentBanner, deleteTournamentBanner} from "@/lib/storage";
 
@@ -52,130 +51,118 @@ export default function AdminPage() {
     CREATE TOURNAMENT
   */
 
-  const handleCreateTournament =
-    async () => {
+ const handleCreateTournament = async () => {
+  try {
+    if (!title || !discordLink || !banner) {
+      toast.error("Please fill all fields");
+      return;
+    }
 
-      try {
-        const {
-  data: { user },
-} = await supabase.auth.getUser();
+    setCreating(true);
 
-console.log("Supabase User:", user);
+    /*
+      GET CURRENT USER
+    */
 
-        if (
-          !title ||
-          !discordLink ||
-          !banner
-        ) {
+    const storedUser =
+      localStorage.getItem("ignite_user");
 
-          toast.error(
-            "Please fill all fields"
-          );
+    if (!storedUser) {
+      toast.error("Session expired");
+      setCreating(false);
+      return;
+    }
 
-          return;
+    const currentUser =
+      JSON.parse(storedUser);
+
+    /*
+      UPLOAD BANNER
+    */
+
+    const bannerUrl =
+      await uploadTournamentBanner(
+        banner
+      );
+
+    if (!bannerUrl) {
+      toast.error("Banner upload failed");
+      setCreating(false);
+      return;
+    }
+
+    /*
+      CREATE TOURNAMENT THROUGH API
+    */
+
+    const response =
+      await fetch(
+        "/api/admin/tournaments",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            title,
+            banner: bannerUrl,
+            discord_link:
+              discordLink,
+            status,
+            registration_open:
+              registrationOpen,
+            discord_id:
+              currentUser.discord_id,
+          }),
         }
+      );
 
-        setCreating(true);
+    const result =
+      await response.json();
 
-        /*
-          UPLOAD IMAGE
-        */
+    if (!result.success) {
+      await deleteTournamentBanner(
+        bannerUrl
+      );
 
-        const bannerUrl =
-          await uploadTournamentBanner(
-            banner
-          );
+      toast.error(
+        result.error ||
+          "Tournament creation failed"
+      );
 
-        if (!bannerUrl) {
+      setCreating(false);
+      return;
+    }
 
-          toast.error(
-            "Banner upload failed"
-          );
+    /*
+      SUCCESS
+    */
 
-          setCreating(false);
+    toast.success(
+      "Tournament created successfully"
+    );
 
-          return;
-        }
+    setTitle("");
+    setDiscordLink("");
+    setStatus("ongoing");
+    setRegistrationOpen(true);
+    setBanner(null);
+    setPreviewUrl("");
 
-        /*
-          SAVE TO DATABASE
-        */
+    setCreating(false);
+  } catch (error) {
+    console.log(error);
 
-        const { error } =
-          await supabase
+    toast.error(
+      "Something went wrong"
+    );
 
-            .from("tournaments")
-
-            .insert([
-              {
-                title,
-
-                banner:
-                  bannerUrl,
-
-                discord_link:
-                  discordLink,
-
-                status,
-
-                registration_open:
-                  registrationOpen,
-              },
-            ]);
-
-        if (error) {
-
-          console.log(error);
-
-          await deleteTournamentBanner(bannerUrl);
-
-          toast.error(
-            "Tournament creation failed"
-          );
-
-          setCreating(false);
-
-          return;
-        }
-
-        /*
-          SUCCESS
-        */
-
-        toast.success(
-          "Tournament created successfully"
-        );
-
-        /*
-          RESET FORM
-        */
-
-        setTitle("");
-
-        setDiscordLink("");
-
-        setStatus("ongoing");
-
-        setRegistrationOpen(true);
-
-        setBanner(null);
-
-        setPreviewUrl("");
-
-        setCreating(false);
-
-      } catch (error) {
-
-        console.log(error);
-
-        toast.error(
-          "Something went wrong"
-        );
-
-        setCreating(false);
-      }
-    };
-
+    setCreating(false);
+  }
+};
   /*
     LOADING
   */
