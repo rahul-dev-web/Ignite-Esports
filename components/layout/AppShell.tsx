@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 type IgniteUser = {
   username?: string;
   avatar?: string;
+  selected_avatar?: string;
   role?: string;
 };
 
@@ -54,7 +55,7 @@ export default function AppShell({
         <Navbar
   loggedIn={!!user}
   username={user?.username}
-  avatar={user?.avatar}
+  avatar={user?.selected_avatar || user?.avatar || "/avatars/default.png"}
   role={user?.role}
   onMenuClick={() => setSidebarOpen(true)}
   onLogout={handleLogout}
